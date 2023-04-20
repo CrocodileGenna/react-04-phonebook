@@ -6,8 +6,21 @@ import { nanoid } from 'nanoid';
 
 import { GlobalStyle, LIST_DIV } from './App.styled';
 import Notiflix from 'notiflix';
-import { useState } from 'react';
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
+
+//---------------------------Castom Huck---------------------------------
+// const useLocalStorag = (key, defValue) => {
+//   const [state, setState] = useState(() => {
+//     return JSON.parse(window.localStorage.getItem(key) ?? defValue);
+//   });
+
+//   useEffect(() => {
+//     window.localStorage.setItem(key, JSON.stringify(state));
+//   }, [key, state]);
+
+//   return [state, setState];
+// };
+//-----------------------------------------------------------------------
 
 export function App() {
   const contact = localStorage.getItem('contacts');
@@ -21,7 +34,21 @@ export function App() {
         { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
       ]
   );
+
+  //---------------------------Castom Huck---------------------------------
+  // const [contacts, setContacts] = useLocalStorag('contacts', [
+  //   { id: 'id-1', name: 'Rosie Simpson', number: '459-12-56' },
+  //   { id: 'id-2', name: 'Hermione Kline', number: '443-89-12' },
+  //   { id: 'id-3', name: 'Eden Clements', number: '645-17-79' },
+  //   { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
+  // ]);
+  //-----------------------------------------------------------------------
+
   const [filter, setFilter] = useState('');
+
+  useEffect(() => {
+    localStorage.setItem('contacts', JSON.stringify(contacts));
+  }, [contacts]);
 
   const submitHandler = value => {
     value.id = nanoid();
@@ -45,10 +72,6 @@ export function App() {
     console.log(currentId);
     setContacts(contacts.filter(({ id }) => id !== currentId));
   };
-
-  useEffect(() => {
-    localStorage.setItem('contacts', JSON.stringify(contacts));
-  }, [contacts]);
 
   return (
     <GlobalStyle>
